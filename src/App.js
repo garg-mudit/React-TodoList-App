@@ -2,17 +2,19 @@ import React, { Component } from "react";
 import "./App.css";
 import Header from "./components/layout/Header";
 import Todos from "./components/Todos";
+import AddTodo from "./components/AddTodo";
+import { v4 as uuidv4 } from "uuid";
 
 class App extends Component {
   state = {
     todos: [
       {
-        id: 1,
+        id: uuidv4(),
         title: "Finish React JS tutorial",
         completed: false
       },
       {
-        id: 2,
+        id: uuidv4(),
         title: "Finish React Native tutorial",
         completed: false
       }
@@ -33,16 +35,31 @@ class App extends Component {
       todos: [...this.state.todos.filter(x => x.id !== id)]
     });
   };
+  addTodo = title => {
+    let newId = uuidv4();
+    const newTodo = {
+      id: newId,
+      title,
+      completed: false
+    };
+    console.log(newId);
+    this.setState({
+      todos: [...this.state.todos, newTodo]
+    });
+  };
   render() {
     return (
       <div>
-        <Header></Header>
-        <Todos
-          key="0"
-          todos={this.state.todos}
-          markComplete={this.markComplete}
-          onDeleteTodo={this.onDeleteTodo}
-        />
+        <div className="container">
+          <Header></Header>
+          <AddTodo addTodo={this.addTodo}></AddTodo>
+          <Todos
+            key="0"
+            todos={this.state.todos}
+            markComplete={this.markComplete}
+            onDeleteTodo={this.onDeleteTodo}
+          />
+        </div>
       </div>
     );
   }
