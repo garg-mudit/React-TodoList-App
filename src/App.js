@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Header from "./components/layout/Header";
+import Todos from "./components/Todos";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    todos: [
+      {
+        id: 1,
+        title: "Finish React JS tutorial",
+        completed: false
+      },
+      {
+        id: 2,
+        title: "Finish React Native tutorial",
+        completed: false
+      }
+    ]
+  };
+  markComplete = id => {
+    this.setState({
+      todos: this.state.todos.map(x => {
+        if (x.id === id) {
+          x.completed = !x.completed;
+        }
+        return x;
+      })
+    });
+  };
+  onDeleteTodo = id => {
+    this.setState({
+      todos: [...this.state.todos.filter(x => x.id !== id)]
+    });
+  };
+  render() {
+    return (
+      <div>
+        <Header></Header>
+        <Todos
+          key="0"
+          todos={this.state.todos}
+          markComplete={this.markComplete}
+          onDeleteTodo={this.onDeleteTodo}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
